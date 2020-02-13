@@ -3,29 +3,18 @@ import Container from "@material-ui/core/Container";
 import InputGrid from "./InputGrid";
 import Navbar from "./Navbar";
 import ResultsGrid from "./ResultsGrid";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 class Main extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      phase: 1,
-      steamids: []
-    };
-  }
-  async getResults(steamids) {
-    await this.setState({ phase: 2 });
-    await this.setState({ steamids: steamids });
-  }
   render() {
     return (
       <div>
         <Navbar></Navbar>
         <Container fixed>
-          {this.state.phase === 1 ? (
-            <InputGrid getResults={this.getResults.bind(this)}></InputGrid>
-          ) : (
-            <ResultsGrid steamids={this.state.steamids}></ResultsGrid>
-          )}
+          <Router>
+            <Route exact path="/" component={InputGrid} />
+            <Route path="/results/:steamids" component={ResultsGrid} />
+          </Router>
         </Container>
         <br />
       </div>

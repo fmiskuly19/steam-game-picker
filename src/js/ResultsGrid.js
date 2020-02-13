@@ -17,15 +17,12 @@ class Main extends React.Component {
     };
   }
   async componentDidMount() {
-    await this.setState({ loading: true });
     console.log("hit results grid");
+    await this.setState({ loading: true });
 
-    console.log(this.props.steamids);
-
+    let steamids = this.props.match.params.steamids;
     console.log("starting promise chain");
-    let url = `http://localhost:8080/v1/steam/GetPlayerSummaries/${this.props.steamids.join(
-      ","
-    )}`;
+    let url = `http://localhost:8080/v1/steam/GetPlayerSummaries/${steamids}`;
     fetch(url)
       .then(res => res.json())
       .then(res => {
@@ -268,9 +265,6 @@ class Main extends React.Component {
               style={{ padding: "20px" }}
             >
               {this.gameChoiceCard}
-            </Grid>
-            <Grid>
-              <Typography variant="h4">Players</Typography>
             </Grid>
             <Grid
               container
