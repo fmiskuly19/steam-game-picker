@@ -1,0 +1,41 @@
+body {
+  margin: 0px;
+}
+
+.main {
+  background-color: #f0f0f0;
+}
+
+.navbar {
+  background-color: #1b2838;
+}
+
+.playercardcontent {
+  padding: 10px;
+}
+
+.paperContent {
+  padding: 15px;
+}
+
+.steamAvatar {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.gridItem {
+  border: "1px solid red";
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.image-container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
