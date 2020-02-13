@@ -205,7 +205,7 @@ class Main extends React.Component {
               avatar={user.p.avatarfull}
               personaname={user.p.personaname}
               profileurl={user.p.profileurl}
-              lastOnline={user.p.lastonline}
+              personastate={user.p.personastate}
               country={user.p.loccountrycode}
               state={user.p.locstatecode}
               numGames={user.n}
