@@ -22,7 +22,7 @@ class Main extends React.Component {
 
     let steamids = this.props.match.params.steamids;
     console.log("starting promise chain");
-    let url = `http://localhost:8080/v1/steam/GetPlayerSummaries/${steamids}`;
+    let url = `${process.env.REACT_APP_HOST_URL}/v1/steam/GetPlayerSummaries/${steamids}`;
     fetch(url)
       .then(res => res.json())
       .then(res => {
@@ -40,7 +40,7 @@ class Main extends React.Component {
 
           promises.push(
             fetch(
-              `http://localhost:8080/v1/steam/GetOwnedGames/${
+              `${process.env.REACT_APP_HOST_URL}/v1/steam/GetOwnedGames/${
                 player.steamid
               }&${true}&${true}`
             )
@@ -129,7 +129,7 @@ class Main extends React.Component {
 
         promises.push(
           fetch(
-            `http://localhost:8080/v1/steam/GetAppDetails/${gameChoice.appid}`
+            `${process.env.REACT_APP_HOST_URL}/v1/steam/GetAppDetails/${gameChoice.appid}`
           )
         );
         promises.push(gamesInCommon);

@@ -41,8 +41,11 @@ class SteamInput extends React.Component {
       vanityURL =
         "thisisnotarealvanityurlitsjusttogetaroundsendingablankcharacter";
 
+    let url = `${process.env.REACT_APP_HOST_URL}/v1/steam/resolveVanityURL/${vanityURL}`;
+    console.log(url);
+
     //resolve vanity url and get internal steam id
-    fetch(`http://localhost:8080/v1/steam/resolveVanityURL/${vanityURL}`)
+    fetch(url)
       .then(res => res.json()) //convert
       .then(res => {
         let success = res.response.success;
