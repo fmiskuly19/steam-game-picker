@@ -4,20 +4,24 @@ import InputGrid from "./InputGrid";
 import Navbar from "./Navbar";
 import ResultsGrid from "./ResultsGrid";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 class Main extends React.Component {
   render() {
     return (
-      <div>
+      <React.Fragment>
+        <CssBaseline />
         <Navbar></Navbar>
-        <Container fixed>
-          <Router>
-            <Route exact path="/" component={InputGrid} />
-            <Route path="/results/:steamids" component={ResultsGrid} />
-          </Router>
-        </Container>
-        <br />
-      </div>
+        <main>
+          <Container fixed>
+            <Router>
+              <Route exact path="/" component={InputGrid} />
+              <Route path="/results/:steamids" component={ResultsGrid} />
+            </Router>
+          </Container>
+          <br />
+        </main>
+      </React.Fragment>
     );
   }
 }

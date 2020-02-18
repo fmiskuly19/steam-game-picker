@@ -29,7 +29,7 @@ class Main extends React.Component {
       if (steaminput.state.isValid === true) {
         //increment count of valid steam ids
         count++;
-        //store valid steamids in state to be used in parent component
+        //store valid steamids in state to be used in route
         this.state.steamids.push(steaminput.state.steamid);
       }
     });
@@ -54,10 +54,15 @@ class Main extends React.Component {
         );
       }
     }
-
     return (
-      <Box>
-        <Grid container direction="column" justify="center" alignItems="center">
+      <React.Fragment>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+          style={{ marginTop: "20px" }}
+        >
           <Grid item>
             <Paper>
               <TextField
@@ -109,8 +114,7 @@ class Main extends React.Component {
             Pick a Game!
           </Button>
         </Grid>
-        <Grid container justify="center" direction="row"></Grid>
-      </Box>
+      </React.Fragment>
     );
   }
 }
