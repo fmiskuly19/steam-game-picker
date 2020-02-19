@@ -5,7 +5,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import WifiIcon from "@material-ui/icons/Wifi";
 import WifiOffIcon from "@material-ui/icons/WifiOff";
-import "../css/styles.css";
+import "../css/styles.scss";
 import { styled } from "@material-ui/styles";
 
 const Online = styled(WifiIcon)({

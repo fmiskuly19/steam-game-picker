@@ -4,7 +4,6 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import SteamInput from "./SteamInput";
-import { Box } from "@material-ui/core";
 
 class Main extends React.Component {
   constructor() {
