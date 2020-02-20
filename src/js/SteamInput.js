@@ -5,9 +5,11 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
+
 import GamepadTwoToneIcon from "@material-ui/icons/GamepadTwoTone";
 import { Checkmark } from "react-checkmark";
 import { PulseLoader } from "react-spinners";
+import { FaBan } from "react-icons/fa";
 
 class SteamInput extends React.Component {
   constructor() {
@@ -72,12 +74,22 @@ class SteamInput extends React.Component {
   }
   render() {
     return (
-      <Grid item lg={5}>
+      <Grid item xl={5} lg={5} md={7} sm={12} xs={12}>
         <Paper style={{ padding: "15px" }}>
           <TextField
             id="input-with-icon-adornment"
             onChange={this.onInputChange.bind(this)}
             placeholder="Steam Profile ID"
+            helperText={
+              !this.state.isValid && this.state.vanityURL && this.timeout === 0
+                ? "Please enter a valid Steam ID"
+                : null
+            }
+            error={
+              !this.state.isValid && this.state.vanityURL && this.timeout === 0
+                ? true
+                : false
+            }
             fullWidth
             InputProps={{
               startAdornment: (
@@ -93,6 +105,13 @@ class SteamInput extends React.Component {
                   ) : null}
                   {this.timeout !== 0 ? (
                     <PulseLoader size={10} color="#7AC142"></PulseLoader>
+                  ) : null}
+                  {!this.state.isValid &&
+                  this.state.vanityURL &&
+                  this.timeout === 0 ? (
+                    <div style={{ color: "red" }}>
+                      <FaBan size={20}></FaBan>
+                    </div>
                   ) : null}
                   &nbsp;
                 </InputAdornment>

@@ -11,27 +11,18 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import { FaSteam } from "react-icons/fa";
 import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles(theme => ({
-  footer: {
-    padding: "10px"
-  }
-}));
+import "../css/styles.scss";
 
 const Navbar = () => {
   return (
     <React.Fragment>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar className="navbar">
           <IconButton edge="start" color="inherit" aria-label="menu">
             <FaSteam />
           </IconButton>
           <Typography variant="h5">
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              href="/"
-              color="primary"
-            >
+            <Link className="navbarlink" href="/">
               SteamGamePicker
             </Link>
           </Typography>
@@ -42,12 +33,11 @@ const Navbar = () => {
 };
 
 export default function Main() {
-  const classes = useStyles();
   return (
     <React.Fragment>
       <CssBaseline />
       <Navbar></Navbar>
-      <main>
+      <main className="main">
         <Container fixed>
           <Router>
             <Route exact path="/" component={InputGrid} />
@@ -55,7 +45,7 @@ export default function Main() {
           </Router>
         </Container>
       </main>
-      <footer className={classes.footer}>Hello World</footer>
+      <footer>This is a footer</footer>
     </React.Fragment>
   );
 }
