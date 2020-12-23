@@ -1,127 +1,104 @@
 import React from "react";
+import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import SteamInput from "./SteamInput";
 import Paper from "@material-ui/core/Paper";
-import Radio from "@material-ui/core/Radio";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Select from "@material-ui/core/Select";
-import RadioButtons from "./RadioButtons";
+import Button from "@material-ui/core/Button";
+import SteamInput from "./SteamInput";
 
 class Main extends React.Component {
   constructor() {
     super();
+    this.inputs = [];
     this.state = {
       numPlayers: 0,
       isValid: false,
-      steamid: 0,
-      playerSelection: ""
+      steamids: [],
     };
   }
   async checkSubmitStatus(value) {
+    let count = 0;
     let keys = Object.keys(this.refs);
 
-    await this.setState({ steamid: 0 });
-    keys.forEach(key => {
+    await this.setState({ steamids: [] });
+    keys.forEach((key) => {
       let steaminput = this.refs[key];
       console.log(
         `isValid: ${steaminput.state.steamid},${steaminput.state.isValid}`
       );
-      this.setState({ steamid: steaminput.state.steamid });
+      if (steaminput.state.isValid === true) {
+        //increment count of valid steam ids
+        count++;
+        //store valid steamids in state to be used in route
+        this.state.steamids.push(steaminput.state.steamid);
+      }
     });
-  }
-  async handleRadioChoice(value) {
-    await this.setState({ playerSelection: value });
 
-    console.log(value);
-    if (value === "c") {
+    if (count == this.state.numPlayers && count > 1) {
       await this.setState({ isValid: true });
     } else {
       await this.setState({ isValid: false });
     }
   }
   render() {
+    this.inputs = [];
+    for (var i = 0; i < this.state.numPlayers; i++) {
+      if (i < 8) {
+        this.inputs.push(
+          <SteamInput
+            onChange={this.checkSubmitStatus.bind(this)} //function in parent to observe change in child gets bound as property
+            hasChanged={false}
+            key={"steam-input-" + i} //need key to get rid of react error
+            ref={"steam-input-" + i}
+          ></SteamInput>
+        );
+      }
+    }
     return (
       <React.Fragment>
-        {/* Steaminput text field and label */}
         <Grid
           container
           direction="column"
           justify="center"
           alignItems="center"
-          style={{ marginTop: "15px" }}
+          style={{ marginTop: "20px" }}
         >
-          <Typography variant="overline" display="block" gutterBottom>
-            Step 1: Enter SteamID
-          </Typography>
+          <Grid item>
+            <Paper>
+              <TextField
+                id="outlined-number"
+                onChange={(e) =>
+                  this.setState({ numPlayers: e.target.value }, () => {
+                    this.checkSubmitStatus();
+                  })
+                }
+                value={this.state.numPlayers}
+                style={{
+                  marginLeft: "15px",
+                  marginTop: "10px",
+                  marginBottom: "15px",
+                  marginRight: "15px",
+                }}
+                error={this.state.numPlayers > 8}
+                helperText={this.state.numPlayers > 8 ? "Max 8 players" : ""}
+                label="Number of Players"
+                type="number"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Paper>
+          </Grid>
         </Grid>
         <Grid
           container
           direction="row"
           justify="center"
-          alignItems="center"
-          style={{ marginBottom: "15px" }}
-          spacing={4}
+          style={{ marginTop: "15px" }}
+          spacing={3}
         >
-          <SteamInput
-            key={"steam-input"} //need key to get rid of react error
-            ref={"steam-input"}
-            onChange={this.checkSubmitStatus.bind(this)}
-          ></SteamInput>
+          {this.inputs}
         </Grid>
-
-        {/* Add Players input */}
-
-        {this.state.steamid > 0 ? (
-          <>
-            <Grid
-              container
-              direction="column"
-              justify="center"
-              alignItems="center"
-              style={{ marginTop: "15px", marginBottom: "15px" }}
-              spacing={4}
-            >
-              <Typography variant="overline" display="block" gutterBottom>
-                Step 2: Add Players
-              </Typography>
-              <RadioButtons onChange={this.handleRadioChoice.bind(this)} />
-            </Grid>
-          </>
-        ) : null}
-
-        {/* Add players from friends list */}
-        {this.state.playerSelection === "a" ? (
-          <>
-            <Grid
-              container
-              direction="column"
-              justify="center"
-              alignItems="center"
-              style={{ marginTop: "15px", marginBottom: "15px" }}
-            >
-              <Select></Select>
-            </Grid>
-          </>
-        ) : null}
-
-        {/* Add players manually */}
-        {this.state.playerSelection === "b" ? (
-          <>
-            <Grid
-              container
-              direction="column"
-              justify="center"
-              alignItems="center"
-              style={{ marginTop: "15px", marginBottom: "15px" }}
-            >
-              Hello this will be a number input
-            </Grid>
-          </>
-        ) : null}
-
-        {/* <Grid
+        <Grid
           container
           alignItems="center"
           direction="column"
@@ -135,7 +112,7 @@ class Main extends React.Component {
           >
             Pick a Game!
           </Button>
-        </Grid> */}
+        </Grid>
       </React.Fragment>
     );
   }
