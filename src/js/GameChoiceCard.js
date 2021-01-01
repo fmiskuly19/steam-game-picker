@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
 import Typography from "@material-ui/core/Typography";
@@ -64,7 +63,7 @@ export default function RecipeReviewCard(props) {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <Button variant="contained" href={"steam://" + props.steamid}>
+          <Button variant="contained" href={"steam://run/" + props.steamid}>
             Play
           </Button>
           <Tooltip title="Learn more" placement="top-end">

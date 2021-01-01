@@ -10,7 +10,6 @@ import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import { FaSteam } from "react-icons/fa";
-import { makeStyles } from "@material-ui/core/styles";
 import "../css/styles.scss";
 
 const Navbar = () => {
@@ -32,7 +31,7 @@ const Navbar = () => {
   );
 };
 
-export default function Main() {
+const Main = () => {
   return (
     <React.Fragment>
       <CssBaseline />
@@ -45,7 +44,8 @@ export default function Main() {
           </Router>
         </Container>
       </main>
-      <footer>This is a footer</footer>
     </React.Fragment>
   );
-}
+};
+
+export default Main;
