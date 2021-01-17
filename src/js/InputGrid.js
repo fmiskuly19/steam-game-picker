@@ -21,7 +21,7 @@ const InputGrid = () => {
 
     const inputChanged = (inputData) => {
         //immediately send the new value back to the input
-        const inputsCopy = [...inputs];
+        let inputsCopy = [...inputs];
         let index = inputsCopy.findIndex((x) => x.id === inputData.id);
         inputsCopy[index].value = inputData.value;
         inputsCopy[index].isDirty = true;
@@ -29,13 +29,10 @@ const InputGrid = () => {
         setInputs(inputsCopy);
 
         if (timeout.current) clearTimeout(timeout.current);
+        inputsCopy = [...inputs];
         timeout.current = setTimeout(() => {
             GetSteamId(inputData.value)
                 .then((steamid) => {
-                    const inputsCopy = [...inputs];
-                    let index = inputsCopy.findIndex(
-                        (x) => x.id === inputData.id
-                    );
                     inputsCopy[index] = {
                         id: inputData.id,
                         value: inputData.value,
@@ -46,10 +43,6 @@ const InputGrid = () => {
                     setInputs(inputsCopy);
                 })
                 .catch(() => {
-                    const inputsCopy = [...inputs];
-                    let index = inputsCopy.findIndex(
-                        (x) => x.id === inputData.id
-                    );
                     inputsCopy[index].isValid = false;
                     inputsCopy[index].isDirty = false;
                     setInputs(inputsCopy);
@@ -58,17 +51,19 @@ const InputGrid = () => {
     };
 
     const addInput = () => {
-        numPlayers.current = numPlayers.current + 1;
-        setInputs([
-            ...inputs,
-            {
-                id: numPlayers.current,
-                value: "",
-                isDirty: false,
-                isValid: false,
-                steamid: 0,
-            },
-        ]);
+        if (numPlayers.current < 8) {
+            numPlayers.current = numPlayers.current + 1;
+            setInputs([
+                ...inputs,
+                {
+                    id: numPlayers.current,
+                    value: "",
+                    isDirty: false,
+                    isValid: false,
+                    steamid: 0,
+                },
+            ]);
+        }
     };
 
     const removeInput = (id) => {
