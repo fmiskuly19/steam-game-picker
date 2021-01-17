@@ -13,39 +13,42 @@ import { FaSteam } from "react-icons/fa";
 import "../css/styles.scss";
 
 const Navbar = () => {
-  return (
-    <React.Fragment>
-      <AppBar position="static">
-        <Toolbar className="navbar">
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <FaSteam />
-          </IconButton>
-          <Typography variant="h5">
-            <Link className="navbarlink" href="/">
-              SteamGamePicker
-            </Link>
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            <AppBar position="static">
+                <Toolbar className="navbar">
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <FaSteam />
+                    </IconButton>
+                    <Typography variant="h5">
+                        <Link className="navbarlink" href="/">
+                            SteamGamePicker
+                        </Link>
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+        </React.Fragment>
+    );
 };
 
 const Main = () => {
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <Navbar></Navbar>
-      <main className="main">
-        <Container fixed>
-          <Router>
-            <Route exact path="/" component={InputGrid} />
-            <Route path="/results/:steamids" component={ResultsGrid} />
-          </Router>
-        </Container>
-      </main>
-    </React.Fragment>
-  );
+    return (
+        <React.StrictMode>
+            <CssBaseline />
+            <Navbar></Navbar>
+            <main className="main">
+                <Container fixed>
+                    <Router>
+                        <Route exact path="/" component={InputGrid} />
+                        <Route
+                            path="/results/:steamids"
+                            component={ResultsGrid}
+                        />
+                    </Router>
+                </Container>
+            </main>
+        </React.StrictMode>
+    );
 };
 
 export default Main;

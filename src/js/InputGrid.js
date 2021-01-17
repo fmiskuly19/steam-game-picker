@@ -1,121 +1,143 @@
-import React from "react";
-import TextField from "@material-ui/core/TextField";
+import React, { useState, useRef, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import SteamInput from "./SteamInput";
+import Typography from "@material-ui/core/Typography";
 
-class Main extends React.Component {
-  constructor() {
-    super();
-    this.inputs = [];
-    this.state = {
-      numPlayers: 0,
-      isValid: false,
-      steamids: [],
+import GetSteamId from "./modules/GetSteamId.js";
+
+const InputGrid = () => {
+    const [canSubmit, setCanSubmit] = useState(false);
+    const [inputs, setInputs] = useState([]);
+    const numPlayers = useRef(0);
+    const timeout = useRef(0);
+
+    //can submit logic
+    useEffect(() => {
+        setCanSubmit(false);
+        if (inputs.every((x) => x.isValid === true) && inputs.length > 1)
+            setCanSubmit(true);
+    }, [inputs]);
+
+    const inputChanged = (inputData) => {
+        //immediately send the new value back to the input
+        const inputsCopy = [...inputs];
+        let index = inputsCopy.findIndex((x) => x.id === inputData.id);
+        inputsCopy[index].value = inputData.value;
+        inputsCopy[index].isDirty = true;
+        inputsCopy[index].isValid = false;
+        setInputs(inputsCopy);
+
+        if (timeout.current) clearTimeout(timeout.current);
+        timeout.current = setTimeout(() => {
+            GetSteamId(inputData.value)
+                .then((steamid) => {
+                    const inputsCopy = [...inputs];
+                    let index = inputsCopy.findIndex(
+                        (x) => x.id === inputData.id
+                    );
+                    inputsCopy[index] = {
+                        id: inputData.id,
+                        value: inputData.value,
+                        isDirty: false,
+                        isValid: true,
+                        steamid: steamid,
+                    };
+                    setInputs(inputsCopy);
+                })
+                .catch(() => {
+                    const inputsCopy = [...inputs];
+                    let index = inputsCopy.findIndex(
+                        (x) => x.id === inputData.id
+                    );
+                    inputsCopy[index].isValid = false;
+                    inputsCopy[index].isDirty = false;
+                    setInputs(inputsCopy);
+                });
+        }, 800);
     };
-  }
-  async checkSubmitStatus(value) {
-    let count = 0;
-    let keys = Object.keys(this.refs);
 
-    await this.setState({ steamids: [] });
-    keys.forEach((key) => {
-      let steaminput = this.refs[key];
-      console.log(
-        `isValid: ${steaminput.state.steamid},${steaminput.state.isValid}`
-      );
-      if (steaminput.state.isValid === true) {
-        //increment count of valid steam ids
-        count++;
-        //store valid steamids in state to be used in route
-        this.state.steamids.push(steaminput.state.steamid);
-      }
-    });
+    const addInput = () => {
+        numPlayers.current = numPlayers.current + 1;
+        setInputs([
+            ...inputs,
+            {
+                id: numPlayers.current,
+                value: "",
+                isDirty: false,
+                isValid: false,
+                steamid: 0,
+            },
+        ]);
+    };
 
-    if (count == this.state.numPlayers && count > 1) {
-      await this.setState({ isValid: true });
-    } else {
-      await this.setState({ isValid: false });
-    }
-  }
-  render() {
-    this.inputs = [];
-    for (var i = 0; i < this.state.numPlayers; i++) {
-      if (i < 8) {
-        this.inputs.push(
-          <SteamInput
-            onChange={this.checkSubmitStatus.bind(this)} //function in parent to observe change in child gets bound as property
-            hasChanged={false}
-            key={"steam-input-" + i} //need key to get rid of react error
-            ref={"steam-input-" + i}
-          ></SteamInput>
-        );
-      }
-    }
+    const removeInput = (id) => {
+        const inputsCopy = [...inputs];
+        let index = inputsCopy.findIndex((x) => x.id === id);
+        inputsCopy.splice(index, 1);
+        setInputs(inputsCopy);
+    };
+
+    const drawInputs = () => {
+        return inputs.map((input, index) => {
+            return (
+                <React.Fragment key={index}>
+                    <SteamInput
+                        id={input.id}
+                        value={input.value}
+                        isDirty={input.isDirty}
+                        isValid={input.isValid}
+                        onInputChange={inputChanged}
+                        removeInput={removeInput}
+                    ></SteamInput>
+                </React.Fragment>
+            );
+        });
+    };
+
     return (
-      <React.Fragment>
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="center"
-          style={{ marginTop: "20px" }}
-        >
-          <Grid item>
-            <Paper>
-              <TextField
-                id="outlined-number"
-                onChange={(e) =>
-                  this.setState({ numPlayers: e.target.value }, () => {
-                    this.checkSubmitStatus();
-                  })
-                }
-                value={this.state.numPlayers}
-                style={{
-                  marginLeft: "15px",
-                  marginTop: "10px",
-                  marginBottom: "15px",
-                  marginRight: "15px",
-                }}
-                error={this.state.numPlayers > 8}
-                helperText={this.state.numPlayers > 8 ? "Max 8 players" : ""}
-                label="Number of Players"
-                type="number"
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Paper>
-          </Grid>
-        </Grid>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          style={{ marginTop: "15px" }}
-          spacing={3}
-        >
-          {this.inputs}
-        </Grid>
-        <Grid
-          container
-          alignItems="center"
-          direction="column"
-          style={{ marginTop: "15px" }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={!this.state.isValid}
-            href={`/results/${this.state.steamids}`}
-          >
-            Pick a Game!
-          </Button>
-        </Grid>
-      </React.Fragment>
+        <React.Fragment>
+            <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                style={{ marginTop: "15px" }}
+                spacing={3}
+            >
+                <Grid item xs={12}>
+                    <Typography variant="h4">SteamGamePicker</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button onClick={addInput}>Add Player!</Button>
+                </Grid>
+            </Grid>
+            <Grid
+                container
+                direction="row"
+                justify="center"
+                style={{ marginTop: "15px" }}
+                spacing={3}
+            >
+                {drawInputs()}
+            </Grid>
+            <Grid
+                container
+                alignItems="center"
+                direction="column"
+                style={{ marginTop: "15px" }}
+            >
+                <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={!canSubmit}
+                    href={`/results/${inputs.map((x) => x.steamid + ",")}`}
+                >
+                    Pick a Game!
+                </Button>
+            </Grid>
+        </React.Fragment>
     );
-  }
-}
+};
 
-export default Main;
+export default InputGrid;
