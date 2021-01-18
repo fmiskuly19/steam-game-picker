@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import { Grid, Button, Typography } from "@material-ui/core/";
 import SteamInput from "./SteamInput";
-import Typography from "@material-ui/core/Typography";
-
 import GetSteamId from "./modules/GetSteamId.js";
 
 const InputGrid = () => {
@@ -71,6 +68,7 @@ const InputGrid = () => {
         let index = inputsCopy.findIndex((x) => x.id === id);
         inputsCopy.splice(index, 1);
         setInputs(inputsCopy);
+        numPlayers.current--;
     };
 
     const drawInputs = () => {
@@ -126,7 +124,7 @@ const InputGrid = () => {
                     variant="contained"
                     color="primary"
                     disabled={!canSubmit}
-                    href={`/results/${inputs.map((x) => x.steamid + ",")}`}
+                    href={`/results/${inputs.map((x) => x.steamid)}`}
                 >
                     Pick a Game!
                 </Button>

@@ -1,6 +1,11 @@
 import React from "react";
-import { Grid, Paper, TextField, Button } from "@material-ui/core";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import {
+    Grid,
+    Paper,
+    TextField,
+    Button,
+    InputAdornment,
+} from "@material-ui/core";
 import { Checkmark } from "react-checkmark";
 import { PulseLoader } from "react-spinners";
 import { IconContext } from "react-icons";
