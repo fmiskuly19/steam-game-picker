@@ -29,7 +29,7 @@ const SteamInput = (props) => {
                             <TextField
                                 id="input-with-icon-adornment"
                                 value={props.value}
-                                onChange={onInputChange.bind(this)}
+                                onChange={onInputChange}
                                 placeholder="Steam Profile ID"
                                 helperText={
                                     !props.isValid &&

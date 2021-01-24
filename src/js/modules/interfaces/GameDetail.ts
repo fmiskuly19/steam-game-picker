@@ -1,0 +1,41 @@
+export default interface GameDetail {
+    about_the_game: string;
+    background: string;
+    categories: { id: number; description: string }[];
+    content_descriptors: any;
+    demos: any;
+    detailed_description: string;
+    developers: string[];
+    genres: { id: number; description: string }[];
+    header_image: string;
+    is_free: boolean;
+    legal_notice: string;
+    linux_requirements: [];
+    mac_requirements: [];
+    metacritic: { score: number; url: string };
+    movies?: {
+        highlight: boolean;
+        id: number;
+        mp4?: { 480: string; max: string };
+        name: string;
+        thumbnail: string;
+        webm?: { 480: string; max: string };
+    }[];
+    name: string;
+    package_groups: any[];
+    packages: number[];
+    pc_requirements: any;
+    platforms: { linux: boolean; mac: boolean; windows: boolean };
+    price_overview: any;
+    publishers: string[];
+    recommendations: { total: number };
+    release_date: { coming_soon: boolean; date: string };
+    required_age: string;
+    screenshots: any[];
+    short_description: string;
+    steam_appid: number;
+    support_info: any;
+    supported_languages: string;
+    type: string;
+    website: string;
+}

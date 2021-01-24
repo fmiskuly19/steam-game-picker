@@ -1,7 +1,7 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import InputGrid from "./InputGrid";
-import ResultsGrid from "./ResultsGrid";
+import InputGrid from "./components/InputGrid";
+import ResultsGrid from "./components/ResultsGrid";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";

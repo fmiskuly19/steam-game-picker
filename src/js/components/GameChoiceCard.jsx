@@ -14,6 +14,8 @@ import {
     makeStyles,
     Divider,
 } from "@material-ui/core/";
+import { FaSteamSymbol } from "react-icons/fa";
+import { VscLinkExternal } from "react-icons/vsc";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +51,7 @@ const GameChoiceCard = (props) => {
         <Grid item lg={8}>
             <Card>
                 <CardMedia>
-                    {props.movie !== "" ? (
+                    {props.movie ? (
                         <video
                             controls
                             autoPlay
@@ -89,18 +91,21 @@ const GameChoiceCard = (props) => {
                         color="primary"
                         href={"steam://run/" + props.steamid}
                     >
-                        Play!
+                        Play&nbsp;<FaSteamSymbol></FaSteamSymbol>
                     </Button>
                     &nbsp;
                     <Button
                         variant="contained"
                         color="secondary"
-                        href={
-                            "https://store.steampowered.com/app/" +
-                            props.steamid
+                        onClick={() =>
+                            window.open(
+                                `https://store.steampowered.com/app/
+                                ${props.steamid}`
+                            )
                         }
                     >
-                        View on Steam store
+                        View on Steam store &nbsp;{" "}
+                        <VscLinkExternal></VscLinkExternal>
                     </Button>
                     <Tooltip title="Learn more" placement="top-end">
                         <IconButton

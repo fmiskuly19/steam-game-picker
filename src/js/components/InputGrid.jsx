@@ -1,32 +1,35 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Grid, Button, Typography } from "@material-ui/core/";
 import SteamInput from "./SteamInput";
-import GetSteamId from "./modules/GetSteamId.js";
+import GetSteamId from "../modules/api/GetSteamId";
 
 const InputGrid = () => {
     const [canSubmit, setCanSubmit] = useState(false);
-    const [inputs, setInputs] = useState([]);
+    const [inputStates, setInputStates] = useState([]);
     const numPlayers = useRef(0);
     const timeout = useRef(0);
 
     //can submit logic
     useEffect(() => {
         setCanSubmit(false);
-        if (inputs.every((x) => x.isValid === true) && inputs.length > 1)
+        if (
+            inputStates.every((x) => x.isValid === true) &&
+            inputStates.length > 1
+        )
             setCanSubmit(true);
-    }, [inputs]);
+    }, [inputStates]);
 
     const inputChanged = (inputData) => {
         //immediately send the new value back to the input
-        let inputsCopy = [...inputs];
+        let inputsCopy = [...inputStates];
         let index = inputsCopy.findIndex((x) => x.id === inputData.id);
         inputsCopy[index].value = inputData.value;
         inputsCopy[index].isDirty = true;
         inputsCopy[index].isValid = false;
-        setInputs(inputsCopy);
+        setInputStates(inputsCopy);
 
         if (timeout.current) clearTimeout(timeout.current);
-        inputsCopy = [...inputs];
+        inputsCopy = [...inputStates];
         timeout.current = setTimeout(() => {
             GetSteamId(inputData.value)
                 .then((steamid) => {
@@ -37,12 +40,12 @@ const InputGrid = () => {
                         isValid: true,
                         steamid: steamid,
                     };
-                    setInputs(inputsCopy);
+                    setInputStates(inputsCopy);
                 })
                 .catch(() => {
                     inputsCopy[index].isValid = false;
                     inputsCopy[index].isDirty = false;
-                    setInputs(inputsCopy);
+                    setInputStates(inputsCopy);
                 });
         }, 800);
     };
@@ -50,8 +53,8 @@ const InputGrid = () => {
     const addInput = () => {
         if (numPlayers.current < 8) {
             numPlayers.current = numPlayers.current + 1;
-            setInputs([
-                ...inputs,
+            setInputStates([
+                ...inputStates,
                 {
                     id: numPlayers.current,
                     value: "",
@@ -64,15 +67,15 @@ const InputGrid = () => {
     };
 
     const removeInput = (id) => {
-        const inputsCopy = [...inputs];
+        const inputsCopy = [...inputStates];
         let index = inputsCopy.findIndex((x) => x.id === id);
         inputsCopy.splice(index, 1);
-        setInputs(inputsCopy);
+        setInputStates(inputsCopy);
         numPlayers.current--;
     };
 
     const drawInputs = () => {
-        return inputs.map((input, index) => {
+        return inputStates.map((input, index) => {
             return (
                 <React.Fragment key={index}>
                     <SteamInput
@@ -124,7 +127,7 @@ const InputGrid = () => {
                     variant="contained"
                     color="primary"
                     disabled={!canSubmit}
-                    href={`/results/${inputs.map((x) => x.steamid)}`}
+                    href={`/results/${inputStates.map((x) => x.steamid)}`}
                 >
                     Pick a Game!
                 </Button>
