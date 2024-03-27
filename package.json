@@ -14,7 +14,7 @@
     "cors": "^2.8.5",
     "cross-fetch": "^3.0.6",
     "eslint-plugin-flowtype": "^4.6.0",
-    "express": "^4.17.1",
+    "express": "^4.19.2",
     "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
